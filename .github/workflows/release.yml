@@ -67,7 +67,7 @@ jobs:
           usesh: true
           prepare: pkg install -y rust
           run: |
-            cargo build --release --no-default-features
+            cargo build --release --no-default-features -p flipper-cli
             mkdir -p flipper-x86_64-unknown-freebsd
             cp target/release/flipper flipper-x86_64-unknown-freebsd/
             cp README.md LICENSE flipper-x86_64-unknown-freebsd/
