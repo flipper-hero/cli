@@ -31,7 +31,7 @@ agents and people share the same surface.
 Pair it with [**FlipperHero for iOS**](https://github.com/flipper-hero/ios-app):
 the phone app gives your Flipper an AI agent with approvals and an audit log;
 the CLI gives your terminal — and your local agents — the same device over USB
-and Bluetooth.
+and Bluetooth. News and downloads live at [**flipper-hero.net**](https://flipper-hero.net).
 
 ## Features
 
