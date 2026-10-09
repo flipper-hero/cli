@@ -118,6 +118,8 @@ jobs:
             if [[ -f "$dir/flipper.exe" ]]; then
               (cd "$dir" && zip -q "../../out/flipper-${VERSION}-${target#flipper-}.zip" flipper.exe README.md LICENSE)
             else
+              # upload-artifact does not preserve the executable bit.
+              chmod +x "$dir/flipper"
               tar czf "out/flipper-${VERSION}-${target#flipper-}.tar.gz" -C "$dir" flipper README.md LICENSE
             fi
           done
