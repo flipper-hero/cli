@@ -308,6 +308,7 @@ async fn dispatch(cli: &Cli) -> anyhow::Result<i32> {
             client.stop().await;
             result
         }
+        #[cfg(feature = "ble")]
         Link::Ble(client) => {
             let result = run_command(&client, cli, json).await;
             client.stop().await;
@@ -491,6 +492,7 @@ async fn run_command<T: Transport>(
     }
 }
 
+#[cfg(feature = "ble")]
 async fn scan(duration: Duration, json: bool) -> anyhow::Result<i32> {
     let adapter = flipper_ble::first_adapter()
         .await
@@ -516,6 +518,13 @@ async fn scan(duration: Duration, json: bool) -> anyhow::Result<i32> {
     };
     emit(json, value, human);
     Ok(EXIT_OK)
+}
+
+#[cfg(not(feature = "ble"))]
+async fn scan(_duration: Duration, _json: bool) -> anyhow::Result<i32> {
+    bail!(
+        "this build has no Bluetooth support (btleplug has no backend for this platform); use USB"
+    )
 }
 
 fn ports(json: bool) -> anyhow::Result<i32> {

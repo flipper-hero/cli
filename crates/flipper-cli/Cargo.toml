@@ -10,10 +10,16 @@ repository.workspace = true
 name = "flipper"
 path = "src/main.rs"
 
+[features]
+default = ["ble"]
+# Bluetooth LE needs btleplug, which has no FreeBSD backend; the FreeBSD
+# release build uses --no-default-features for a USB-only binary.
+ble = ["dep:flipper-ble"]
+
 [dependencies]
 flipper-core = { workspace = true }
 flipper-usb = { workspace = true }
-flipper-ble = { workspace = true }
+flipper-ble = { workspace = true, optional = true }
 tokio = { workspace = true }
 anyhow = { workspace = true }
 serde = { workspace = true }
