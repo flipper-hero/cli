@@ -419,15 +419,16 @@ mod pairing {
         fn address(&self) -> zbus::Result<String>;
     }
 
+    /// BlueZ GetManagedObjects reply: object path → interfaces → properties.
+    type ManagedObjects = HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>>;
+
     #[zbus::proxy(
         interface = "org.bluez.ObjectManager",
         default_service = "org.bluez",
         default_path = "/"
     )]
     trait ObjectManager {
-        fn get_managed_objects(
-            &self,
-        ) -> zbus::Result<HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>>>;
+        fn get_managed_objects(&self) -> zbus::Result<ManagedObjects>;
     }
 
     /// A no-dialog agent: the Flipper shows the code and its user confirms on
