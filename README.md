@@ -165,8 +165,17 @@ or name from `scan`), `--port PATH` (USB device path), `--timeout SECONDS`.
 
 ## Getting started
 
-**You need** Rust 1.85+ and a Flipper Zero. No protobuf compiler: the
-generated bindings are committed.
+**Prebuilt binaries** for macOS (Apple silicon, Intel, universal), Linux
+(x86_64, aarch64), Windows and FreeBSD are on the
+[releases page](https://github.com/flipper-hero/cli/releases):
+
+```sh
+tar xzf flipper-*-aarch64-apple-darwin.tar.gz
+./flipper info
+```
+
+**Or build from source** — Rust 1.85+, no protobuf compiler needed (the
+generated bindings are committed):
 
 ```sh
 git clone https://github.com/flipper-hero/cli.git
