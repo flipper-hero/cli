@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://github.com/flipper-hero/cli/actions/workflows/ci.yml"><img src="https://github.com/flipper-hero/cli/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/macOS%20·%20Linux%20·%20Windows%20·%20FreeBSD-✓-2ea44f" alt="platforms">
-  <img src="https://img.shields.io/badge/Rust-1.85%2B-F05138?logo=rust" alt="Rust">
+  <img src="https://img.shields.io/badge/Rust-1.89%2B-F05138?logo=rust" alt="Rust">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT license"></a>
 </p>
 
@@ -174,7 +174,7 @@ tar xzf flipper-*-aarch64-apple-darwin.tar.gz
 ./flipper info
 ```
 
-**Or build from source** — Rust 1.85+, no protobuf compiler needed (the
+**Or build from source** — Rust 1.89+, no protobuf compiler needed (the
 generated bindings are committed):
 
 ```sh
