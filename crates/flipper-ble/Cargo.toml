@@ -16,4 +16,4 @@ btleplug = "0.13"
 log = "0.4"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-zbus = { version = "5", default-features = false, features = ["tokio"] }
+zbus = "5"

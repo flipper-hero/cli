@@ -394,8 +394,7 @@ mod pairing {
     use btleplug::api::Peripheral as _;
     use btleplug::platform::Peripheral;
     use tokio::time::timeout;
-    use zbus::fdo::Result as FdoResult;
-    use zbus::zvariant::{ObjectPath, OwnedObjectPath, OwnedValue, Value};
+    use zbus::zvariant::{ObjectPath, OwnedObjectPath, OwnedValue};
 
     use super::BleError;
 
@@ -433,40 +432,36 @@ mod pairing {
 
     /// A no-dialog agent: the Flipper shows the code and its user confirms on
     /// the device itself, so the host side just accepts and surfaces the code.
+    /// Methods are infallible — we never reject a pairing request.
     struct Agent;
 
     #[zbus::interface(name = "org.bluez.Agent1")]
     impl Agent {
         fn release(&self) {}
 
-        fn request_pin_code(&self, _device: ObjectPath<'_>) -> FdoResult<String> {
-            Ok("0000".to_owned())
+        fn request_pin_code(&self, _device: ObjectPath<'_>) -> String {
+            "0000".to_owned()
         }
 
         fn display_pin_code(&self, _device: ObjectPath<'_>, pin_code: String) {
             eprintln!("Pairing: confirm code {pin_code} on the Flipper, then press OK there.");
         }
 
-        fn request_passkey(&self, _device: ObjectPath<'_>) -> FdoResult<u32> {
-            Ok(0)
+        fn request_passkey(&self, _device: ObjectPath<'_>) -> u32 {
+            0
         }
 
         fn display_passkey(&self, _device: ObjectPath<'_>, passkey: u32, _entered: u16) {
             eprintln!("Pairing: confirm code {passkey:06} on the Flipper, then press OK there.");
         }
 
-        fn request_confirmation(&self, _device: ObjectPath<'_>, passkey: u32) -> FdoResult<()> {
+        fn request_confirmation(&self, _device: ObjectPath<'_>, passkey: u32) {
             eprintln!("Pairing: confirm code {passkey:06} on the Flipper, then press OK there.");
-            Ok(())
         }
 
-        fn request_authorization(&self, _device: ObjectPath<'_>) -> FdoResult<()> {
-            Ok(())
-        }
+        fn request_authorization(&self, _device: ObjectPath<'_>) {}
 
-        fn authorize_service(&self, _device: ObjectPath<'_>, _uuid: String) -> FdoResult<()> {
-            Ok(())
-        }
+        fn authorize_service(&self, _device: ObjectPath<'_>, _uuid: String) {}
     }
 
     pub async fn is_paired(peripheral: &Peripheral) -> Option<bool> {
@@ -477,17 +472,17 @@ mod pairing {
         let objects = proxy.get_managed_objects().await.ok()?;
         objects
             .into_iter()
-            .find_map(|(path, interfaces)| {
+            .find_map(|(_path, interfaces)| {
                 interfaces.get("org.bluez.Device1").and_then(|properties| {
                     properties
                         .get("Address")
-                        .and_then(|value| value.try_into().ok())
+                        .and_then(|value| String::try_from(value.clone()).ok())
                         .filter(|found: &String| found.eq_ignore_ascii_case(&address))
                         .and_then(|_| {
                             interfaces
                                 .get("org.bluez.Device1")?
                                 .get("Paired")
-                                .and_then(|value| <&Value as TryInto<bool>>::try_into(value).ok())
+                                .and_then(|value| bool::try_from(value.clone()).ok())
                         })
                 })
             })
@@ -518,7 +513,7 @@ mod pairing {
                     interfaces.get("org.bluez.Device1").and_then(|device| {
                         device
                             .get("Address")
-                            .and_then(|value| value.try_into().ok())
+                            .and_then(|value| String::try_from(value.clone()).ok())
                             .filter(|found: &String| found.eq_ignore_ascii_case(&address))
                             .map(|_| path)
                     })
@@ -550,7 +545,7 @@ mod pairing {
         let agent_path = ObjectPath::try_from(AGENT_PATH)
             .map_err(|error| BleError::Btleplug(error.to_string()))?;
         let _ = agent_manager
-            .register_agent(agent_path, "KeyboardDisplay")
+            .register_agent(agent_path.clone(), "KeyboardDisplay")
             .await;
 
         let pairing = timeout(Duration::from_secs(90), object_proxy.pair()).await;
