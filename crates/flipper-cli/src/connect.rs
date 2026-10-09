@@ -29,6 +29,7 @@ pub enum TransportChoice {
 pub struct ConnectOptions {
     pub transport: TransportChoice,
     /// BLE device id or exact name from `flipper scan`.
+    #[cfg_attr(not(feature = "ble"), allow(dead_code))]
     pub device: Option<String>,
     /// USB device path (`/dev/cu.usbmodem*`, `/dev/ttyACM0`, `COM4`).
     pub port: Option<String>,
