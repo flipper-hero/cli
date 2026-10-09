@@ -1,0 +1,23 @@
+[package]
+name = "flipper-cli"
+description = "Agent-friendly CLI for the Flipper Zero over USB and Bluetooth LE"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "flipper"
+path = "src/main.rs"
+
+[dependencies]
+flipper-core = { workspace = true }
+flipper-usb = { workspace = true }
+flipper-ble = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+clap = { version = "4", features = ["derive", "wrap_help"] }
+base64 = "0.22"
+png = "0.18"

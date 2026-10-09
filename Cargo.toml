@@ -1,0 +1,30 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/flipper-core",
+    "crates/flipper-usb",
+    "crates/flipper-ble",
+    "crates/flipper-cli",
+    "crates/genproto",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/flipper-hero/flipper-cli"
+
+[workspace.dependencies]
+flipper-core = { path = "crates/flipper-core" }
+flipper-usb = { path = "crates/flipper-usb" }
+flipper-ble = { path = "crates/flipper-ble" }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time", "io-util", "signal"] }
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+futures = "0.3"
+
+[profile.release]
+lto = true
+strip = true

@@ -1,0 +1,10 @@
+[package]
+name = "genproto"
+description = "Regenerates the committed protobuf bindings in flipper-core from protos/"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+prost-build = "0.14"
