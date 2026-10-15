@@ -568,7 +568,7 @@ dependencies = [
 
 [[package]]
 name = "flipper-ble"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "btleplug",
  "flipper-core",
@@ -582,7 +582,7 @@ dependencies = [
 
 [[package]]
 name = "flipper-cli"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "base64",
@@ -598,7 +598,7 @@ dependencies = [
 
 [[package]]
 name = "flipper-core"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "prost",
  "prost-build",
@@ -611,7 +611,7 @@ dependencies = [
 
 [[package]]
 name = "flipper-usb"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "flipper-core",
  "log",
@@ -729,7 +729,7 @@ dependencies = [
 
 [[package]]
 name = "genproto"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "prost-build",
 ]
