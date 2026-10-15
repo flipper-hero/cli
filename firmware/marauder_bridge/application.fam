@@ -1,0 +1,9 @@
+App(
+    appid="marauder_bridge",
+    name="Marauder Bridge",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="marauder_bridge_app",
+    requires=["gui", "rpc_start"],
+    stack_size=4 * 1024,
+    fap_category="GPIO",
+)

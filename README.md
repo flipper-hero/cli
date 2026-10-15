@@ -158,10 +158,49 @@ flipper reboot [--updater]         restart
 flipper update MANIFEST            stage an update package, reboot into the updater
 flipper raw '{"content":{...}}'    raw protobuf RPC as JSON (proto3 mapping)
 flipper gpio set|read|write PIN    header pins
+flipper marauder commands|list|stations|ssids|scan|sniff|attack|stop
 ```
 
 Global flags: `--json`, `--transport auto|usb|ble`, `--device ID` (Bluetooth id
 or name from `scan`), `--port PATH` (USB device path), `--timeout SECONDS`.
+
+### Marauder board over the Flipper GPIO header
+
+The `marauder` commands use the small FAP in `firmware/marauder_bridge/` to bridge
+Flipper RPC to the Marauder's 115200-baud UART on GPIO pins 13/14. Build it with
+the Flipper firmware SDK matching your device, then install it at
+`/ext/apps/GPIO/marauder_bridge.fap`. For a local Momentum firmware checkout:
+
+```sh
+ln -s /absolute/path/to/cli/firmware/marauder_bridge /absolute/path/to/Momentum-Firmware/applications_user/marauder_bridge
+cd /absolute/path/to/Momentum-Firmware
+./fbt fap_marauder_bridge
+flipper put build/f7-firmware-C/.extapps/marauder_bridge.fap /ext/apps/GPIO/marauder_bridge.fap
+```
+
+Remove only the temporary `applications_user/marauder_bridge` symlink after
+building. The bridge accepts a fixed command set, not arbitrary serial input.
+
+```sh
+flipper marauder commands
+flipper marauder scan --duration 10
+flipper marauder list
+flipper marauder stations
+flipper marauder ssids
+flipper marauder sniff beacon --duration 5
+flipper marauder attack deauth --ap 2 --duration 3
+flipper marauder attack probe --ssid 0 --duration 3
+flipper marauder attack beacon --duration 3
+flipper marauder attack rickroll --duration 3
+```
+
+`deauth` requires one AP index from `list`; `probe` requires one Wi-Fi name
+index from `ssids`. Scans and radio tests
+stop automatically; the FAP also sends `stopscan` when its RPC session closes.
+`--json` returns the bounded, sanitized serial response and parsed access points.
+The CLI has no approval layer: run transmitting modes only on systems you are
+authorized to test. The companion iOS agent offers these modes only in its
+open-source edition and asks before each transmission.
 
 ## Getting started
 

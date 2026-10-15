@@ -3,6 +3,7 @@
 //! document with `--json`, so agents and scripts can share the same surface.
 
 mod connect;
+mod marauder;
 mod output;
 
 use std::path::PathBuf;
@@ -168,6 +169,11 @@ enum Command {
     Gpio {
         #[command(subcommand)]
         action: GpioAction,
+    },
+    /// Query a Marauder board attached to the Flipper GPIO header.
+    Marauder {
+        #[command(subcommand)]
+        action: marauder::MarauderAction,
     },
 }
 
@@ -488,6 +494,7 @@ async fn run_command<T: Transport>(
             Ok(EXIT_OK)
         }
         Command::Gpio { action } => gpio(client, action, json).await,
+        Command::Marauder { action } => marauder::run(client, action, json).await,
         Command::Scan { .. } | Command::Ports => unreachable!("handled without a connection"),
     }
 }
