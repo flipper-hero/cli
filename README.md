@@ -166,10 +166,14 @@ or name from `scan`), `--port PATH` (USB device path), `--timeout SECONDS`.
 
 ### Marauder board over the Flipper GPIO header
 
-The `marauder` commands use the small FAP in `firmware/marauder_bridge/` to bridge
+The `marauder` commands use the small FAP in
+[`firmware/marauder_bridge/`](firmware/marauder_bridge/README.md) to bridge
 Flipper RPC to the Marauder's 115200-baud UART on GPIO pins 13/14. Build it with
 the Flipper firmware SDK matching your device, then install it at
-`/ext/apps/GPIO/marauder_bridge.fap`. For a local Momentum firmware checkout:
+`/ext/apps/GPIO/marauder_bridge.fap`. A prebuilt Momentum FAP is on the
+[Marauder Bridge release](https://github.com/flipper-hero/cli/releases/tag/marauder-bridge-v0.1.0);
+the linked guide covers installation and firmware compatibility. For a local
+Momentum firmware checkout:
 
 ```sh
 ln -s /absolute/path/to/cli/firmware/marauder_bridge /absolute/path/to/Momentum-Firmware/applications_user/marauder_bridge
